@@ -1,11 +1,11 @@
 # EthniVision
-EthniVision is a website created using React and Express that takes in an image of the user and returns their predicted ethnicity.  
-It utilizes a machine learning model created using the FairFace dataset.  
-Created using Docker, Tensorflow, pandas, Numpy, React, Express, and MongoDB.
+* EthniVision is a website created using React and Express that takes in an image of the user and returns their predicted ethnicity.  
+* It utilizes a machine learning model created using the FairFace dataset.  
+*Created using Docker, Tensorflow, Keras, pandas, Numpy, React, Express, and MongoDB.
 
 # Prerequisites  
-This project was built and ran entirely using docker, so to use this project you will need to have docker installed on your machine.  
-Docker provides a self-contained environment, ensuring that all the necessary dependencies, libraries, and configurations are encapsulated within the Docker containers.
+* This project was built and ran entirely using docker, so to use this project you will need to have docker installed on your machine.  
+* Docker provides a self-contained environment, ensuring that all the necessary dependencies, libraries, and configurations are encapsulated within the Docker containers.
 
 # Installing
 You can find the installation instructions for docker [here](https://docs.docker.com/get-docker/).  
@@ -23,8 +23,8 @@ This will build the docker images and run the containers.
 The website will be available at http://localhost:3000/
 
 # References  
-The dataset I used was the FairFace face image dataset. It contains 108,501 race-balanced images from 7 different race groups: White, Black, Indian, East Asian, Southeast Asian, Middle Eastern, and Latino.  
-The data was sourced from: [Repository](https://github.com/dchen236/FairFace)  
+* The dataset I used was the FairFace face image dataset. It contains 108,501 race-balanced images from 7 different race groups: White, Black, Indian, East Asian, Southeast Asian, Middle Eastern, and Latino.  
+* The data was sourced from the [FairFace Github Repository](https://github.com/dchen236/FairFace)  
 
 # Citation
 ```
