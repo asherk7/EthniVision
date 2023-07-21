@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon app.js",
+    "client": "npm run start --prefix ../client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "proxy": "http://localhost:4000",
+  "proxy": "http://localhost:4000/",
   "keywords": [],
   "author": "",
   "license": "ISC",
