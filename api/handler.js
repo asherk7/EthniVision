@@ -4,7 +4,7 @@ const imgSchema = require('./model.js');
 const multer = require('multer');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "../client/src/resources/images")
+        cb(null, "../client/src/resources/uploads")
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now();

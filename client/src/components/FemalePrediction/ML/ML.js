@@ -41,7 +41,7 @@ const ML = () => {
       </form>
       {allImages && allImages.map(data => {
         return (
-          <img src={require(`../../../resources/images/${data.image}`)} alt="image" />
+          <img src={require(`../../../resources/uploads/${data.image}`)} alt="image" />
         )
       })}
     </div>
