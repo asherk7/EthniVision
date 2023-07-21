@@ -1,13 +1,20 @@
 import React from 'react'
-import Header from './components/Header/Header.js'
-import About from './components/About/About.js'
+import Main from './components/Main/Main'
+import Female from './components/FemalePrediction/Female.js'
+import Male from './components/MalePrediction/Male.js'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
 const App = () => {
   return (
-    <div>
-      <Header />
-      <About />
-    </div>
+    <Router>
+      <div>
+        <Routes>
+          <Route path="/" element={<Main/>} />
+          <Route path="/male" element={<Male/>} />
+          <Route path="/female" element={<Female/>} />
+        </Routes>
+      </div>
+    </Router>
   )
 }
 
