@@ -1,6 +1,7 @@
 # EthniVision
 EthniVision is a website created using React and Express that takes in an image of the user and returns their predicted ethnicity.  
-It utilizes a machine learning model created using the FairFace dataset.
+It utilizes a machine learning model created using the FairFace dataset.  
+Created using Docker, Tensorflow, pandas, Numpy, React, Express, and MongoDB.
 
 # Prerequisites  
 This project was built and ran entirely using docker, so to use this project you will need to have docker installed on your machine.  

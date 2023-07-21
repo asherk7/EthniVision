@@ -4,7 +4,7 @@ import './demo.css'
 
 const Demo = () => {
   return (
-    <div className="nav">
+    <div>
       <Link to="/male">
         <button>
           Male
