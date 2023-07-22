@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  api:
+    container_name: api
+    image: express-backend:latest
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+  
+  client:
+    container_name: client
+    image: react-frontend:latest
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+
+  ml:
+    container_name: ml
+    image: ml:latest
+    build:
+      context: ./ml
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    

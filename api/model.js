@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-const imageSchema = new mongoose.Schema(
+const ethnicitySchema = new mongoose.Schema(
     {
-        image: String
+        ethnicity: String
     },
     {
-        collection: "ImageDetails",
+        collection: "ModelPrediction",
     }
 );
 
-module.exports = mongoose.model('Image', imageSchema);
+module.exports = mongoose.model('Ethnicity', ethnicitySchema);

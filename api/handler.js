@@ -1,41 +1,54 @@
 const express = require('express');
 const router = express.Router();
-const imgSchema = require('./model.js');
-const multer = require('multer');
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "../client/src/resources/uploads")
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now();
-        cb(null, uniqueSuffix + "-" + file.originalname)
-    }
-});
-const upload = multer({ storage: storage });
+const ethnicitySchema = require('./model.js');
+const tf = require('@tensorflow/tfjs');
+const model_path = '../ml/models/1/ML_model.pb';
 
 router.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Backend for EthniVision, go to localhost:3000 to see the actual app');
 });
 
-router.post('/upload', upload.single("image"), async(req, res) => {
-    const imageName = req.file.filename;
+router.post('/upload',  async(req, res) => {
+    const imageData = req.body.imageData;
+    const base64Data = imageData.replace(/^data:image\/jpeg;base64,/, "");
+    const imageBuffer = Buffer.from(base64Data, 'base64');
+    
+    //const imageTensor = tf.node.decodeImage(imageBuffer);
+    //process imageTensor, resize, etc.
+    //const ML_model = await tf.loadGraphModel(model_path);
+    //const prediction = ML_model.predict(imageTensor);
+    
+    const pred_Ethnicity = "Ethnicity"
     try{
-        await imgSchema.create({ image: imageName });
-        res.json({status: "ok"})
-    }
-    catch(err){
-        res.json({status: "error"})
+        await ethnicitySchema.findOneAndUpdate({}, {ethnicity: pred_Ethnicity}, {
+            upsert: true,
+            new: true,
+            setDefaultsOnInsert: true
+        });
+        res.send({status: "ok"});
+    } catch(err) {
+        res.send({status: err});
     }
 });
 
-router.get('/getImages', async(req, res) => {
+router.get('/getEthnicity', async(req, res) => {
     try{
-        imgSchema.find({}).then((data) => {
+        const count = await ethnicitySchema.countDocuments();
+        if (count > 0) {
+            const data = await ethnicitySchema.find({});
             res.send({status:"ok", data:data});
-        })
+        }
+    } catch(err){
+        res.send({status: err})
     }
-    catch(err){
-        res.json({status: err})
+});
+
+router.get('/reset', async(req, res) => {
+    try{
+        await ethnicitySchema.deleteMany({});
+        res.send({status: "ok"});
+    } catch(err) {
+        res.send({status: err});
     }
 });
 

@@ -1,17 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { resetDatabase } from '../../../utils'
 import './redirect.css'
 
 const Redirect = () => {
   return (
     <div>
       <Link to="/">
-        <button>
+        <button onClick={resetDatabase}>
           Home
         </button>
       </Link>
       <Link to="/female">
-        <button>
+        <button onClick={resetDatabase}>
           female
         </button>
       </Link>
