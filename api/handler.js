@@ -16,7 +16,7 @@ router.post('/upload',  async(req, res) => {
     //const imageTensor = tf.node.decodeImage(imageBuffer);
     //process imageTensor, resize, etc.
     //const ML_model = await tf.loadGraphModel(model_path);
-    //const prediction = ML_model.predict(imageTensor);
+    //const prediction = await ML_model.predict(imageTensor).data();    
     
     const pred_Ethnicity = "Ethnicity"
     try{
