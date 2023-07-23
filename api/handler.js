@@ -9,8 +9,8 @@ router.get('/', (req, res) => {
 });
 
 router.post('/upload',  async(req, res) => {
-    const imageData = req.body.imageData;
-    const base64Data = imageData.replace(/^data:image\/jpeg;base64,/, "");
+    const imageData = req.body.base64;
+    const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
     const imageBuffer = Buffer.from(base64Data, 'base64');
     
     //const imageTensor = tf.node.decodeImage(imageBuffer);
