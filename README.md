@@ -29,6 +29,10 @@ To stop the program, run the following command:
 ```
 docker-compose down
 ```
+To remove the docker images, run the following command:  
+```
+docker rmi <image_name>
+```
 
 # References  
 * The dataset I used was the FairFace face image dataset. It contains 108,501 race-balanced images from 7 different race groups: White, Black, Indian, East Asian, Southeast Asian, Middle Eastern, and Latino.  
