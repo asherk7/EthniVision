@@ -39,12 +39,4 @@ docker rmi <image_name>
 * The data was sourced from the [FairFace Github Repository](https://github.com/dchen236/FairFace)  
 
 # Citation
-```
- @inproceedings{karkkainenfairface,
-  title={FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age for Bias Measurement and Mitigation},
-  author={Karkkainen, Kimmo and Joo, Jungseock},
-  booktitle={Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision},
-  year={2021},
-  pages={1548--1558}
-}
-```
+Karkkainen, Kimmo and Joo, Jungseock. (2021). FairFace: Face Attribute Dataset for Balanced Race, Gender, and Age for Bias Measurement and Mitigation. Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision. 1548-1558. 10.1109/WACV48630.2021.00159
