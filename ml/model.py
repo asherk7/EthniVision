@@ -10,6 +10,10 @@ csv_file_path = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\fair
 data_df = pd.read_csv(csv_file_path)
 image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  # Directory containing the images
 
+#Get and import a tensorflow model that can detect a face
+#crop and store the detected face and use that on the main model
+#train, validate, then test both models
+
 # Preprocess the data
 # Convert ethnicities to numerical labels (e.g., 0 for Asian, 1 for Caucasian, etc.)
 # Split the data into training and testing sets (80-20 or as desired)
