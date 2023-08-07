@@ -12,6 +12,7 @@ image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  
 
 #Get and import a tensorflow model that can detect a face
 #crop and store the detected face and use that on the main model
+#train the new model using an existing face detection model
 #train, validate, then test both models
 
 # Preprocess the data
