@@ -10,10 +10,26 @@ csv_file_path = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\fair
 data_df = pd.read_csv(csv_file_path)
 image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  # Directory containing the images
 
+# grab ~2000 images from train and 500 from val, and move to test folder
+# cut the same images from the csv's and move to test csv
+
+# crop.py - crops images and saves them
 #Get and import a tensorflow model that can detect a face
-#crop and store the detected face and use that on the main model
-#train the new model using an existing face detection model
-#train, validate, then test both models
+#Retinaface-resnet50
+#https://docs.openvino.ai/2023.0/omz_models_model_retinaface_resnet50_pytorch.html
+#use it to crop and align faces and save them
+
+# model.py - trains the ethnicity model and saves model
+# use the cropped faces to train, validate, and test
+# use the training, val, and test folders, rather than splitting using sklearn
+
+
+# use both models in backend for actual functionality (one to crop, one to predict)
+# Make the ML aspect perfect, use chatgpt to ensure model and code format is perfect
+# research models/loss functions/optimizers, etc
+# Add a section in the readme for ML, describe the process, data, training, etc
+# create graphs and functions and visualizations throughout the process and document it
+# Create the model on a jupyter notebook and keep that in the repo
 
 # Preprocess the data
 # Convert ethnicities to numerical labels (e.g., 0 for Asian, 1 for Caucasian, etc.)
