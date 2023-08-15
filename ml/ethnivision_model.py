@@ -13,20 +13,28 @@ image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  
 # grab ~2000 images from train and 500 from val, and move to test folder
 # cut the same images from the csv's and move to test csv
 
-# crop.py - crops images and saves them
+# crop.py - crops images(train, val, and test) and saves them
 #Get and import a tensorflow model that can detect a face
 #Retinaface-resnet50
 #https://docs.openvino.ai/2023.0/omz_models_model_retinaface_resnet50_pytorch.html
 #use it to crop and align faces and save them
+# can also use what fairface used, or similar, but try original method first
 
-# model.py - trains the ethnicity model and saves model
-# use the cropped faces to train, validate, and test
-# use the training, val, and test folders, rather than splitting using sklearn
+# create a jupyter notebook (ethnivision_model_building.ipynb) and create the model there
+# get cropped images, turn into tensors, clean and scale data, 
+# create the model, experiment, visualize, do all ML steps
+# train and validate here, get final model
+# make sure to use training, val, and test folders instead of splitting using sklearn
+# add validation data to fitting the model with validation generator and val folder
 
+# ethnivision_model.py - trains the ethnicity model and saves model
+# final model from the jupyter notebook, save code here for the model
+# use name==main, and import model, and use it to predict the testing images
+# model should already be trained and saved, so this file will not need to be used
 
 # use both models in backend for actual functionality (one to crop, one to predict)
 # Make the ML aspect perfect, use chatgpt to ensure model and code format is perfect
-# research models/loss functions/optimizers, etc
+# research models/loss functions/optimizers, etc, make model very big and look complicated
 # Add a section in the readme for ML, describe the process, data, training, etc
 # create graphs and functions and visualizations throughout the process and document it
 # Create the model on a jupyter notebook and keep that in the repo
