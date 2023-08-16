@@ -10,15 +10,6 @@ csv_file_path = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\fair
 data_df = pd.read_csv(csv_file_path)
 image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  # Directory containing the images
 
-# update readme with image of website making predictions, and the model accuracy
-# create the model, experiment, visualize, do all ML steps
-# add validation data to fitting the model with validation generator and val folder
-
-# ethnivision_model.py - trains the ethnicity model and saves model
-# final model from the jupyter notebook, save code here for the model
-# use name==main, and import model, and use it to predict the testing images
-# model should already be trained and saved, so this file will not need to be used
-
 # use model in backend for actual functionality
 # Make the ML aspect perfect, use chatgpt to ensure model and code format is perfect
 # research models/loss functions/optimizers, etc, make model very big and look complicated
@@ -78,3 +69,4 @@ model.save('models/')
 # Get these images from MongoDB database in the express backend
 
 # Step 10: Deploy the model to the website and fine-tune it
+
