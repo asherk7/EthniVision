@@ -10,10 +10,7 @@ csv_file_path = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\fair
 data_df = pd.read_csv(csv_file_path)
 image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  # Directory containing the images
 
-# although project is called ethnivision, predict age and other stuff too
-# edit readme to show this, and make sure notebook is well documented
-# Add a section in the readme for ML, describe the process, data, training, etc
-
+# update readme with image of website making predictions, and the model accuracy
 # create the model, experiment, visualize, do all ML steps
 # add validation data to fitting the model with validation generator and val folder
 
