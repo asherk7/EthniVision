@@ -6,14 +6,9 @@ import './demo.css'
 const Demo = () => {
   return (
     <div>
-      <Link to="/male">
+      <Link to="/predict">
         <button onClick={resetDatabase}>
-          Male
-        </button>
-      </Link>
-      <Link to="/female">
-        <button onClick={resetDatabase}>
-          female
+          Predict
         </button>
       </Link>
     </div>

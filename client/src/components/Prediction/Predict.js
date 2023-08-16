@@ -5,16 +5,16 @@ import ML from './ML/ML'
 import Redirect from './Redirect/Redirect'
 import Footer from '../Main/Footer/Footer'
 
-const Female = () => {
+const Predict = () => {
   return (
     <div>
-        <Header />
-        <About />
-        <ML />
-        <Redirect />
-        <Footer />
+      <Header />
+      <About />
+      <ML />
+      <Redirect />
+      <Footer />
     </div>
   )
 }
 
-export default Female
+export default Predict

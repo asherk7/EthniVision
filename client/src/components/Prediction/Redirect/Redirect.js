@@ -11,11 +11,6 @@ const Redirect = () => {
           Home
         </button>
       </Link>
-      <Link to="/female">
-        <button onClick={resetDatabase}>
-          female
-        </button>
-      </Link>
     </div>
   )
 }
