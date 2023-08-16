@@ -10,15 +10,27 @@ csv_file_path = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\fair
 data_df = pd.read_csv(csv_file_path)
 image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  # Directory containing the images
 
-# grab ~2000 images from train and 500 from val, and move to test folder
-# cut the same images from the csv's and move to test csv
+#make jupyter notebook and do everything there
+# crop images, data analysis, create model, etc
+# move final model here and keep notebook
 
-# crop.py - crops images(train, val, and test) and saves them
-#Get and import a tensorflow model that can detect a face
-#Retinaface-resnet50
-#https://docs.openvino.ai/2023.0/omz_models_model_retinaface_resnet50_pytorch.html
-#use it to crop and align faces and save them
-# can also use what fairface used, or similar, but try original method first
+# make train have 73273 images
+# val and test have 14654 images
+
+# in the notebook, state that # images are in train and # images are in val
+# use code to move all images into an images folder
+# use a counter to rename all files from train and val
+# use that same counter to rename the val csv file
+# once all images are in a folder and a csv has everything
+# use code to move 75% of images into train folder and csv
+# use code to move 15% of images into val folder and csv
+# use code to move 15% of images into test folder and csv
+
+# make sure to rename files in each folder to be 0.jpg, 1.jpg, 2.jpg, etc.
+# edit the csv files to reflect the new file names and their ethnicities, age, etc
+# although project is called ethnivision, predict age and other stuff too
+# edit readme to show this, and make sure notebook is well documented
+# add notebook stuff to readme
 
 # create a jupyter notebook (ethnivision_model_building.ipynb) and create the model there
 # get cropped images, turn into tensors, clean and scale data, 
