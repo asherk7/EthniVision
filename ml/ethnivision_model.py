@@ -10,33 +10,11 @@ csv_file_path = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\fair
 data_df = pd.read_csv(csv_file_path)
 image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  # Directory containing the images
 
-#make jupyter notebook and do everything there
-# crop images, data analysis, create model, etc
-# move final model here and keep notebook
-
-# make train have 73273 images
-# val and test have 14654 images
-
-# in the notebook, state that # images are in train and # images are in val
-# use code to move all images into an images folder
-# use a counter to rename all files from train and val
-# use that same counter to rename the val csv file
-# once all images are in a folder and a csv has everything
-# use code to move 75% of images into train folder and csv
-# use code to move 15% of images into val folder and csv
-# use code to move 15% of images into test folder and csv
-
-# make sure to rename files in each folder to be 0.jpg, 1.jpg, 2.jpg, etc.
-# edit the csv files to reflect the new file names and their ethnicities, age, etc
 # although project is called ethnivision, predict age and other stuff too
 # edit readme to show this, and make sure notebook is well documented
-# add notebook stuff to readme
+# Add a section in the readme for ML, describe the process, data, training, etc
 
-# create a jupyter notebook (ethnivision_model_building.ipynb) and create the model there
-# get cropped images, turn into tensors, clean and scale data, 
 # create the model, experiment, visualize, do all ML steps
-# train and validate here, get final model
-# make sure to use training, val, and test folders instead of splitting using sklearn
 # add validation data to fitting the model with validation generator and val folder
 
 # ethnivision_model.py - trains the ethnicity model and saves model
@@ -47,13 +25,7 @@ image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  
 # use both models in backend for actual functionality (one to crop, one to predict)
 # Make the ML aspect perfect, use chatgpt to ensure model and code format is perfect
 # research models/loss functions/optimizers, etc, make model very big and look complicated
-# Add a section in the readme for ML, describe the process, data, training, etc
 # create graphs and functions and visualizations throughout the process and document it
-# Create the model on a jupyter notebook and keep that in the repo
-
-# Preprocess the data
-# Convert ethnicities to numerical labels (e.g., 0 for Asian, 1 for Caucasian, etc.)
-# Split the data into training and testing sets (80-20 or as desired)
 
 # Creating an ImageDataGenerator for data augmentation and loading images
 batch_size = 32
