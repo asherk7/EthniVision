@@ -22,7 +22,7 @@ image_dir = "C:\Users\mashe\Downloads\\fairface-img-margin125-trainval\\train"  
 # use name==main, and import model, and use it to predict the testing images
 # model should already be trained and saved, so this file will not need to be used
 
-# use both models in backend for actual functionality (one to crop, one to predict)
+# use model in backend for actual functionality
 # Make the ML aspect perfect, use chatgpt to ensure model and code format is perfect
 # research models/loss functions/optimizers, etc, make model very big and look complicated
 # create graphs and functions and visualizations throughout the process and document it
