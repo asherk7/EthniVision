@@ -6,7 +6,7 @@ from keras.preprocessing.image import ImageDataGenerator
 from tensorflow.python.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout, BatchNormalization
 from tensorflow.python.keras.models import Sequential, Model
 from tensorflow.python.keras.optimizers import Adam
-from tensorflow.python.keras.callbacks import ModelCheckpoint, LearningRateScheduler
+from tensorflow.python.keras.callbacks import ModelCheckpoint
 
 # loading preprocessed data
 data_dir = "C:\\Users\\mashe\\Downloads\\cropped_images"
@@ -56,7 +56,7 @@ val_generator = val_datagen.flow_from_dataframe(
     class_mode='multi_output',
 )
 
-# Creating our model
+# Creating our new model
 tf.random.set_seed(42)
 
 model = Sequential()
@@ -104,8 +104,8 @@ losses = {
     'race': 'sparse_categorical_crossentropy'
 }
 
-learning_rate = 0.001 # change based on graph
-epochs = 100 #edit based on the model finding best learning rate
+learning_rate = 1e-5
+epochs = 100
 
 ethnivision_model.compile(
     loss=losses,
