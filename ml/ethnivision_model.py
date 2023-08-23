@@ -4,7 +4,7 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from keras.preprocessing.image import ImageDataGenerator
 from keras.applications import VGG16
-from tensorflow.python.keras.layers import Dense, Flatten, Dropout, BatchNormalization
+from tensorflow.python.keras.layers import Dense, Flatten, Dropout, BatchNormalization, GlobalAveragePooling2D, Conv2D, MaxPooling2D
 from tensorflow.python.keras.models import Model
 from tensorflow.python.keras.optimizers import Adam
 from tensorflow.python.keras.callbacks import ModelCheckpoint
@@ -66,22 +66,32 @@ for layer in model.layers:
 # Creating our new model
 tf.random.set_seed(42)
 
-# Building seperate branches for each output
+# Common shared output
+x = model.output
+x = GlobalAveragePooling2D()(x)
+x = Conv2D(256, (3, 3), activation='relu')(x)
+x = BatchNormalization()(x)
+x = MaxPooling2D((2, 2))(x)
+x = Dropout(0.5)(x)
 
-age_output = Flatten()(model.layers[-1].output)
-age_output = Dense(256, activation='relu')(age_output)
+x = Conv2D(128, (3, 3), activation='relu')(x)
+x = BatchNormalization()(x)
+x = MaxPooling2D((2, 2))(x)
+x = Dropout(0.5)(x)
+x = Flatten()(x)
+
+# Building seperate branches for each output
+age_output = Dense(256, activation='relu')(x)
 age_output = BatchNormalization()(age_output)
 age_output = Dropout(0.5)(age_output)
 age_output = Dense(9, activation='softmax', name='age')(age_output)
 
-gender_output = Flatten()(model.layers[-1].output)
-gender_output = Dense(256, activation='relu')(gender_output)
+gender_output = Dense(256, activation='relu')(x)
 gender_output = BatchNormalization()(gender_output)
 gender_output = Dropout(0.5)(gender_output)
 gender_output = Dense(2, activation='sigmoid', name='gender')(gender_output)
 
-race_output = Flatten()(model.layers[-1].output)
-race_output = Dense(256, activation='relu')(race_output)
+race_output = Dense(256, activation='relu')(x)
 race_output = Dense(128, activation='relu')(race_output)
 race_output = BatchNormalization()(race_output)
 race_output = Dropout(0.5)(race_output)
