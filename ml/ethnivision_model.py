@@ -4,11 +4,10 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from keras.preprocessing.image import ImageDataGenerator
 from keras.applications import VGG16
-from tensorflow.python.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout, BatchNormalization, GlobalAveragePooling2D
-from tensorflow.python.keras.models import Sequential, Model
+from tensorflow.python.keras.layers import Dense, Flatten, Dropout, BatchNormalization
+from tensorflow.python.keras.models import Model
 from tensorflow.python.keras.optimizers import Adam
-from tensorflow.python.keras.utils import plot_model
-from tensorflow.python.keras.callbacks import ModelCheckpoint, LearningRateScheduler
+from tensorflow.python.keras.callbacks import ModelCheckpoint
 
 # Turning the training, validation, and testing sets into dataframes
 data_dir = "C:\\Users\\mashe\\Downloads\\cropped_images"
@@ -86,7 +85,7 @@ race_output = Dense(256, activation='relu')(race_output)
 race_output = Dense(128, activation='relu')(race_output)
 race_output = BatchNormalization()(race_output)
 race_output = Dropout(0.5)(race_output)
-race_output = Dense(7, activation='softmax', name='race')(race_output)
+race_output = Dense(6, activation='softmax', name='race')(race_output)
 
 ethnivision_model = Model(inputs=model.input, outputs=[age_output, gender_output, race_output], name='ethnivision')
 
