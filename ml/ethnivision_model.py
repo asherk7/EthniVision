@@ -4,10 +4,10 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from keras.preprocessing.image import ImageDataGenerator
 from keras.applications import VGG16
-from tensorflow.python.keras.layers import Dense, Flatten, Dropout, BatchNormalization, GlobalAveragePooling2D, Conv2D, MaxPooling2D
+from tensorflow.python.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout, BatchNormalization, GlobalAveragePooling2D, Activation
 from tensorflow.python.keras.models import Model
 from tensorflow.python.keras.optimizers import Adam
-from tensorflow.python.keras.callbacks import ModelCheckpoint
+from tensorflow.python.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 # Turning the training, validation, and testing sets into dataframes
 data_dir = "C:\\Users\\mashe\\Downloads\\cropped_images"
@@ -60,41 +60,49 @@ val_generator = val_datagen.flow_from_dataframe(
 
 model = VGG16(weights='imagenet', include_top=False, input_shape=input_shape)
 
+# Freeze the layers so they don't get updated during training
 for layer in model.layers:
     layer.trainable = False
 
-# Creating our new model
+# Creating our model
 tf.random.set_seed(42)
 
 # Common shared output
 x = model.output
-x = GlobalAveragePooling2D()(x)
-x = Conv2D(256, (3, 3), activation='relu')(x)
+x = Conv2D(32, (3, 3), activation='relu', padding='same')(x)
 x = BatchNormalization()(x)
+x = Activation('relu')(x)
 x = MaxPooling2D((2, 2))(x)
 x = Dropout(0.5)(x)
 
-x = Conv2D(128, (3, 3), activation='relu')(x)
+x = Conv2D(64, (3, 3), activation='relu', padding='same')(x)
 x = BatchNormalization()(x)
+x = Activation('relu')(x)
 x = MaxPooling2D((2, 2))(x)
-x = Dropout(0.5)(x)
-x = Flatten()(x)
+x = Dropout(0.25)(x)
+
+x = GlobalAveragePooling2D()(x)
 
 # Building seperate branches for each output
-age_output = Dense(256, activation='relu')(x)
+age_output = Flatten()(x)
+age_output = Dense(256, activation='relu')(age_output)
+age_output = Dense(128, activation='relu')(age_output)
 age_output = BatchNormalization()(age_output)
-age_output = Dropout(0.5)(age_output)
+age_output = Dropout(0.3)(age_output)
 age_output = Dense(9, activation='softmax', name='age')(age_output)
 
-gender_output = Dense(256, activation='relu')(x)
+gender_output = Flatten()(x)
+gender_output = Dense(256, activation='relu')(gender_output)
+gender_output = Dense(128, activation='relu')(gender_output)
 gender_output = BatchNormalization()(gender_output)
-gender_output = Dropout(0.5)(gender_output)
+gender_output = Dropout(0.3)(gender_output)
 gender_output = Dense(2, activation='sigmoid', name='gender')(gender_output)
 
-race_output = Dense(256, activation='relu')(x)
+race_output = Flatten()(x)
+race_output = Dense(256, activation='relu')(race_output)
 race_output = Dense(128, activation='relu')(race_output)
 race_output = BatchNormalization()(race_output)
-race_output = Dropout(0.5)(race_output)
+race_output = Dropout(0.3)(race_output)
 race_output = Dense(6, activation='softmax', name='race')(race_output)
 
 ethnivision_model = Model(inputs=model.input, outputs=[age_output, gender_output, race_output], name='ethnivision')
@@ -106,13 +114,13 @@ losses = {
 }
 
 loss_weights = {
-    'age': 2,
-    'gender': 0.2,
-    'race': 3.5
+    'age': 1.5,
+    'gender': 0.3,
+    'race': 2.5
 }
 
 learning_rate = 1e-4
-epochs = 30
+epochs = 50
 
 ethnivision_model.compile(
     loss=losses,
@@ -122,7 +130,15 @@ ethnivision_model.compile(
 )
 
 callbacks = [
-    ModelCheckpoint("./model_checkpoint", monitor='val_loss', save_best_only=True)
+    EarlyStopping(
+    monitor='val_loss', 
+    patience=5, 
+    restore_best_weights=True),
+    ModelCheckpoint(
+    filepath='./model_checkpoint',
+    save_weights_only=True,
+    monitor='val_loss',
+    save_best_only=True)
 ]
 
 history = ethnivision_model.fit(
