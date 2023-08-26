@@ -3,8 +3,7 @@ import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from keras.preprocessing.image import ImageDataGenerator
-from keras.applications import VGG16
-from tensorflow.python.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout, BatchNormalization, GlobalAveragePooling2D, Activation
+from tensorflow.python.keras.layers import Dense, Conv2D, MaxPooling2D, BatchNormalization, GlobalAveragePooling2D, Input, ReLU, add
 from tensorflow.python.keras.models import Model
 from tensorflow.python.keras.optimizers import Adam
 from tensorflow.python.keras.callbacks import EarlyStopping, ModelCheckpoint
@@ -58,54 +57,91 @@ val_generator = val_datagen.flow_from_dataframe(
     class_mode='multi_output',
 )
 
-model = VGG16(weights='imagenet', include_top=False, input_shape=input_shape)
-
-# Freeze the layers so they don't get updated during training
-for layer in model.layers:
-    layer.trainable = False
-
 # Creating our model
 tf.random.set_seed(42)
 
-# Common shared output
-x = model.output
-x = Conv2D(32, (3, 3), activation='relu', padding='same')(x)
-x = BatchNormalization()(x)
-x = Activation('relu')(x)
-x = MaxPooling2D((2, 2))(x)
-x = Dropout(0.5)(x)
+inputs = Input(shape=input_shape)
 
-x = Conv2D(64, (3, 3), activation='relu', padding='same')(x)
+x = Conv2D(64, kernel_size=(7, 7), strides=(2, 2), padding='same', use_bias=False)(inputs)
 x = BatchNormalization()(x)
-x = Activation('relu')(x)
-x = MaxPooling2D((2, 2))(x)
-x = Dropout(0.25)(x)
+x = ReLU()(x)
+x = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), padding='same')(x)
+
+# Residual block 1
+for _ in range(4):
+    shortcut = x
+    
+    x = Conv2D(64, kernel_size=(3, 3), strides=(1, 1), padding='same', use_bias=False)(x)
+    x = BatchNormalization()(x)
+    x = ReLU()(x)
+    
+    x = Conv2D(64, kernel_size=(3, 3), strides=(1, 1), padding='same', use_bias=False)(x)
+    x = BatchNormalization()(x)
+    
+    x = add([x, shortcut])
+    x = ReLU()(x)
+
+# Transition
+x = Conv2D(128, kernel_size=(1, 1), strides=(2, 2), use_bias=False)(x)
+x = BatchNormalization()(x)
+
+# Residual block 2
+for _ in range(4):
+    shortcut = x
+    
+    x = Conv2D(128, kernel_size=(3, 3), strides=(1, 1), padding='same', use_bias=False)(x)
+    x = BatchNormalization()(x)
+    x = ReLU()(x)
+    
+    x = Conv2D(128, kernel_size=(3, 3), strides=(1, 1), padding='same', use_bias=False)(x)
+    x = BatchNormalization()(x)
+    
+    x = add([x, shortcut])
+    x = ReLU()(x)
+
+# Transition
+x = Conv2D(256, kernel_size=(1, 1), strides=(2, 2), use_bias=False)(x)
+x = BatchNormalization()(x)
+
+# Residual block 3
+for _ in range(6):
+    shortcut = x
+    
+    x = Conv2D(256, kernel_size=(3, 3), strides=(1, 1), padding='same', use_bias=False)(x)
+    x = BatchNormalization()(x)
+    x = ReLU()(x)
+    
+    x = Conv2D(256, kernel_size=(3, 3), strides=(1, 1), padding='same', use_bias=False)(x)
+    x = BatchNormalization()(x)
+    
+    x = add([x, shortcut])
+    x = ReLU()(x)
+
+# Transition
+x = Conv2D(512, kernel_size=(1, 1), strides=(2, 2), use_bias=False)(x)
+x = BatchNormalization()(x)
+
+# Residual block 4
+for _ in range(2):
+    shortcut = x
+    
+    x = Conv2D(512, kernel_size=(3, 3), strides=(1, 1), padding='same', use_bias=False)(x)
+    x = BatchNormalization()(x)
+    x = ReLU()(x)
+    
+    x = Conv2D(512, kernel_size=(3, 3), strides=(1, 1), padding='same', use_bias=False)(x)
+    x = BatchNormalization()(x)
+    
+    x = add([x, shortcut])
+    x = ReLU()(x)
 
 x = GlobalAveragePooling2D()(x)
 
-# Building seperate branches for each output
-age_output = Flatten()(x)
-age_output = Dense(256, activation='relu')(age_output)
-age_output = Dense(128, activation='relu')(age_output)
-age_output = BatchNormalization()(age_output)
-age_output = Dropout(0.3)(age_output)
-age_output = Dense(9, activation='softmax', name='age')(age_output)
+age_output = Dense(9, activation='softmax', name='age')(x)
+gender_output = Dense(2, activation='sigmoid', name='gender')(x)
+race_output = Dense(6, activation='softmax', name='race')(x)
 
-gender_output = Flatten()(x)
-gender_output = Dense(256, activation='relu')(gender_output)
-gender_output = Dense(128, activation='relu')(gender_output)
-gender_output = BatchNormalization()(gender_output)
-gender_output = Dropout(0.3)(gender_output)
-gender_output = Dense(2, activation='sigmoid', name='gender')(gender_output)
-
-race_output = Flatten()(x)
-race_output = Dense(256, activation='relu')(race_output)
-race_output = Dense(128, activation='relu')(race_output)
-race_output = BatchNormalization()(race_output)
-race_output = Dropout(0.3)(race_output)
-race_output = Dense(6, activation='softmax', name='race')(race_output)
-
-ethnivision_model = Model(inputs=model.input, outputs=[age_output, gender_output, race_output], name='ethnivision')
+ethnivision_model = Model(inputs=inputs, outputs=[age_output, gender_output, race_output], name='ethnivision')
 
 losses = {
     'age': 'sparse_categorical_crossentropy',
@@ -114,13 +150,13 @@ losses = {
 }
 
 loss_weights = {
-    'age': 1.5,
+    'age': 2.5,
     'gender': 0.3,
-    'race': 2.5
+    'race': 4
 }
 
 learning_rate = 1e-4
-epochs = 50
+epochs = 100
 
 ethnivision_model.compile(
     loss=losses,
