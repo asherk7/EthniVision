@@ -22,4 +22,8 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.data-00000-of-00001
+model_checkpoint.data-00000-of-00001
+model_checkpoint.index
+variables.data-00000-of-00001
+variables.index
+checkpoint
