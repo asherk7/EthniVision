@@ -1,11 +1,14 @@
 const mongoose = require('mongoose');
-const ethnicitySchema = new mongoose.Schema(
+const predictionSchema = new mongoose.Schema(
     {
-        ethnicity: String
+        prediction: {
+            type: mongoose.Schema.Types.Mixed,
+            default: {}
+        }
     },
     {
         collection: "ModelPrediction",
     }
 );
 
-module.exports = mongoose.model('Ethnicity', ethnicitySchema);
+module.exports = mongoose.model('Prediction', predictionSchema);

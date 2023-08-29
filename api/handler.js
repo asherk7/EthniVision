@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const ethnicitySchema = require('./model.js');
-const tf = require('@tensorflow/tfjs');
-const model_path = '../ml/models/1/ML_model.pb';
+const tf = require('@tensorflow/tfjs-node');
+const model_path = '../ml/models';
 
 router.get('/', (req, res) => {
     res.send('Backend for EthniVision, go to localhost:3000 to see the actual app');
@@ -12,15 +12,21 @@ router.post('/upload',  async(req, res) => {
     const imageData = req.body.base64;
     const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
     const imageBuffer = Buffer.from(base64Data, 'base64');
+
+    const imageTensor = tf.node.decodeImage(imageBuffer);
+    // process image here and reshape to 224x224x3
+    const model = await tf.loadGraphModel(`file://${modelPath}/saved_model.pb`, {
+        weightManifest: `file://${modelPath}/keras_metadata.pb`,
+    });
+    const predictions = await model.predict(imageTensor).data();    
     
-    //const imageTensor = tf.node.decodeImage(imageBuffer);
-    //process imageTensor, resize, etc.
-    //const ML_model = await tf.loadGraphModel(model_path);
-    //const prediction = await ML_model.predict(imageTensor).data();    
-    
-    const pred_Ethnicity = "Ethnicity"
+    const predAge = Array.from(predictions[0].dataSync());
+    const predGender = Array.from(predictions[1].dataSync());
+    const predEthnicity = Array.from(predictions[2].dataSync());
+
+    predictions = [predAge, predGender, predEthnicity]
     try{
-        await ethnicitySchema.findOneAndUpdate({}, {ethnicity: pred_Ethnicity}, {
+        await ethnicitySchema.findOneAndUpdate({}, {predictions: predictions}, {
             upsert: true,
             new: true,
             setDefaultsOnInsert: true
