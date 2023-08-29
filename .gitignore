@@ -25,5 +25,4 @@ yarn-error.log*
 model_checkpoint.data-00000-of-00001
 model_checkpoint.index
 variables.data-00000-of-00001
-variables.index
 checkpoint
