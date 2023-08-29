@@ -183,3 +183,19 @@ history = ethnivision_model.fit(
     epochs=epochs,
     callbacks=callbacks
 )
+
+test_datagen = ImageDataGenerator(rescale=1./255)
+test_generator = test_datagen.flow_from_dataframe(
+    dataframe=test_df,
+    directory=data_dir,
+    x_col="file",
+    y_col=['age', 'gender', 'race'],
+    target_size=img_size,
+    batch_size=batch_size,
+    class_mode='multi_output',
+)
+
+test_loss, age_loss, gender_loss, race_loss, test_accuracy_age, test_accuracy_gender, test_accuracy_race = ethnivision_model.evaluate(test_generator)
+print(f"Test accuracy (Age): {test_accuracy_age}")
+print(f"Test accuracy (Gender): {test_accuracy_gender}")
+print(f"Test accuracy (Race): {test_accuracy_race}")
