@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const ethnicitySchema = require('./model.js');
+const predSchema = require('./model.js');
 const tf = require('@tensorflow/tfjs-node');
 const model_path = '../ml/models';
 
@@ -14,19 +14,25 @@ router.post('/upload',  async(req, res) => {
     const imageBuffer = Buffer.from(base64Data, 'base64');
 
     const imageTensor = tf.node.decodeImage(imageBuffer);
-    // process image here and reshape to 224x224x3
+    const resizedImageTensor = tf.image.resizeBilinear(imageTensor, [224, 224]);
+    const processedImageTensor = resizedImageTensor.expandDims(0);
+
     const model = await tf.loadGraphModel(`file://${modelPath}/saved_model.pb`, {
         weightManifest: `file://${modelPath}/keras_metadata.pb`,
     });
-    const predictions = await model.predict(imageTensor).data();    
+    const predictions = await model.predict(processedImageTensor).data();    
     
     const predAge = Array.from(predictions[0].dataSync());
     const predGender = Array.from(predictions[1].dataSync());
     const predEthnicity = Array.from(predictions[2].dataSync());
 
-    predictions = [predAge, predGender, predEthnicity]
+    predictions = {
+        age: predAge,
+        gender: predGender,
+        ethnicity: predEthnicity
+    }
     try{
-        await ethnicitySchema.findOneAndUpdate({}, {predictions: predictions}, {
+        await predSchema.findOneAndUpdate({}, {predictions: predictions}, {
             upsert: true,
             new: true,
             setDefaultsOnInsert: true
@@ -37,11 +43,11 @@ router.post('/upload',  async(req, res) => {
     }
 });
 
-router.get('/getEthnicity', async(req, res) => {
+router.get('/getPrediction', async(req, res) => {
     try{
-        const count = await ethnicitySchema.countDocuments();
+        const count = await predSchema.countDocuments();
         if (count > 0) {
-            const data = await ethnicitySchema.find({});
+            const data = await predSchema.find({});
             res.send({status:"ok", data:data});
         }
     } catch(err){
@@ -51,7 +57,7 @@ router.get('/getEthnicity', async(req, res) => {
 
 router.get('/reset', async(req, res) => {
     try{
-        await ethnicitySchema.deleteMany({});
+        await predSchema.deleteMany({});
         res.send({status: "ok"});
     } catch(err) {
         res.send({status: err});
