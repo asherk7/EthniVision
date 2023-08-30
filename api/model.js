@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const predictionSchema = new mongoose.Schema(
     {
-        prediction: {
+        predictions: {
             type: mongoose.Schema.Types.Mixed,
             default: {}
         }

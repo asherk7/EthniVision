@@ -4,10 +4,10 @@ import './ml.css'
 
 const ML = () => {
   const [image, setImage] = useState();
-  const [prediction, setPrediction] = useState();
+  const [predictions, setPredictions] = useState();
 
   useEffect(() => {
-    getPrediction();
+    getPredictions();
   }, []);
 
   function convertToBase64(e) {
@@ -40,10 +40,10 @@ const ML = () => {
     })
   }
 
-  const getPrediction = async() => {
+  const getPredictions = async() => {
     try{
       const result = await axios.get("http://localhost:4000/getPrediction");
-      setPrediction(result.data.data);
+      setPredictions(result.data.data);
     } catch(err) {
       console.log(err);
     }
@@ -56,7 +56,7 @@ const ML = () => {
         <button type="submit">Submit</button>
       </form>
       {image && <img src={image} alt="" />}
-      {prediction?.[0]?.prediction && <p>{prediction[0].prediction}</p>}
+      {predictions?.[0]?.predictions && <p>{predictions[0].predictions}</p>}
     </div>
   )
 }

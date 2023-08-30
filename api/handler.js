@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const predSchema = require('./model.js');
 const tf = require('@tensorflow/tfjs-node');
-const model_path = '../ml/models';
+const modelPath = 'tfjs_model';
 
 router.get('/', (req, res) => {
     res.send('Backend for EthniVision, go to localhost:3000 to see the actual app');
@@ -10,21 +10,21 @@ router.get('/', (req, res) => {
 
 router.post('/upload',  async(req, res) => {
     const imageData = req.body.base64;
-    const base64Data = imageData.replace(/^data:image\/png;base64,/, "");
+    const base64Data = imageData.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
     const imageBuffer = Buffer.from(base64Data, 'base64');
 
-    const imageTensor = tf.node.decodeImage(imageBuffer);
+    const imageTensor = tf.node.decodeImage(imageBuffer, 3);
     const resizedImageTensor = tf.image.resizeBilinear(imageTensor, [224, 224]);
-    const processedImageTensor = resizedImageTensor.expandDims(0);
+    const normalizedImageTensor = resizedImageTensor.div(255.0);
+    const processedImageTensor = normalizedImageTensor.expandDims(0);
+    const tfTensor = tf.cast(processedImageTensor, 'float32');
 
-    const model = await tf.loadGraphModel(`file://${modelPath}/saved_model.pb`, {
-        weightManifest: `file://${modelPath}/keras_metadata.pb`,
-    });
-    const predictions = await model.predict(processedImageTensor).data();    
+    const model = await tf.loadLayersModel(`file://${modelPath}/model.json`)  
+    const predictions = await model.predict(tfTensor).data();    
     
-    const predAge = Array.from(predictions[0].dataSync());
-    const predGender = Array.from(predictions[1].dataSync());
-    const predEthnicity = Array.from(predictions[2].dataSync());
+    const predAge = predictions[0]
+    const predGender = predictions[1]
+    const predEthnicity = predictions[2]
 
     predictions = {
         age: predAge,
