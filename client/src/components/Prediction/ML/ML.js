@@ -56,7 +56,12 @@ const ML = () => {
         <button type="submit">Submit</button>
       </form>
       {image && <img src={image} alt="" />}
-      {predictions?.[0]?.predictions && <p>{predictions[0].predictions}</p>}
+      <p>age</p>
+      {predictions?.[0]?.predictions && JSON.stringify(predictions[0]["predictions"]["age"])}
+      <p>gender</p>
+      {predictions?.[0]?.predictions && JSON.stringify(predictions[0]["predictions"]["gender"])}
+      <p>race</p>
+      {predictions?.[0]?.predictions && JSON.stringify(predictions[0]["predictions"]["ethnicity"])}
     </div>
   )
 }

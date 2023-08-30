@@ -4,6 +4,10 @@ const predSchema = require('./model.js');
 const tf = require('@tensorflow/tfjs-node');
 const modelPath = 'tfjs_model';
 
+const age_list = ["0-2", "3-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "more than 70"]
+const gender_list = ["Male", "Female"]
+const ethnicity_list = ["White", "Black", "Latino_Hispanic", "Asian", "Indian", "Middle Eastern"]
+
 router.get('/', (req, res) => {
     res.send('Backend for EthniVision, go to localhost:3000 to see the actual app');
 });
@@ -19,14 +23,20 @@ router.post('/upload',  async(req, res) => {
     const processedImageTensor = normalizedImageTensor.expandDims(0);
     const tfTensor = tf.cast(processedImageTensor, 'float32');
 
-    const model = await tf.loadLayersModel(`file://${modelPath}/model.json`)  
-    const predictions = await model.predict(tfTensor).data();    
-    
-    const predAge = predictions[0]
-    const predGender = predictions[1]
-    const predEthnicity = predictions[2]
+    // crop the image to just the face
 
-    predictions = {
+    const model = await tf.loadLayersModel(`file://${modelPath}/model.json`)  
+    const model_predictions = await model.predict(tfTensor);
+
+    const ageArray = model_predictions[0].arraySync()[0]
+    const genderArray = model_predictions[1].arraySync()[0]
+    const ethnicityArray = model_predictions[2].arraySync()[0]
+
+    const predAge = age_list[ageArray.indexOf(Math.max(...ageArray))]
+    const predGender = gender_list[genderArray.indexOf(Math.max(...genderArray))]
+    const predEthnicity = ethnicity_list[ethnicityArray.indexOf(Math.max(...ethnicityArray))]
+
+    const predictions = {
         age: predAge,
         gender: predGender,
         ethnicity: predEthnicity
