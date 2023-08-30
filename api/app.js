@@ -11,7 +11,7 @@ mongoose.connect(process.env.MONGO_URI,
     { useNewUrlParser: true, useUnifiedTopology: true })
     .then(console.log('Connected to MongoDB'));
 
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 

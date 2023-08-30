@@ -13,25 +13,28 @@ router.get('/', (req, res) => {
 });
 
 router.post('/upload',  async(req, res) => {
+    // Processing the base64 image
     const imageData = req.body.base64;
     const base64Data = imageData.replace(/^data:image\/(png|jpeg|jpg);base64,/, "");
     const imageBuffer = Buffer.from(base64Data, 'base64');
 
+    // Transforming the image into a tensor and preprocessing it
     const imageTensor = tf.node.decodeImage(imageBuffer, 3);
     const resizedImageTensor = tf.image.resizeBilinear(imageTensor, [224, 224]);
     const normalizedImageTensor = resizedImageTensor.div(255.0);
     const processedImageTensor = normalizedImageTensor.expandDims(0);
     const tfTensor = tf.cast(processedImageTensor, 'float32');
 
-    // crop the image to just the face
-
+    // Instantiating the model and making predictions
     const model = await tf.loadLayersModel(`file://${modelPath}/model.json`)  
     const model_predictions = await model.predict(tfTensor);
 
+    // Getting the predictions
     const ageArray = model_predictions[0].arraySync()[0]
     const genderArray = model_predictions[1].arraySync()[0]
     const ethnicityArray = model_predictions[2].arraySync()[0]
 
+    // Mapping the predictions to the actual labels
     const predAge = age_list[ageArray.indexOf(Math.max(...ageArray))]
     const predGender = gender_list[genderArray.indexOf(Math.max(...genderArray))]
     const predEthnicity = ethnicity_list[ethnicityArray.indexOf(Math.max(...ethnicityArray))]

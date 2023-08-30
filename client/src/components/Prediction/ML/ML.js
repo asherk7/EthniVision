@@ -10,7 +10,7 @@ const ML = () => {
     getPredictions();
   }, []);
 
-  function convertToBase64(e) {
+  const convertToBase64 = async(e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(file);
