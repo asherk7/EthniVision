@@ -4,7 +4,11 @@ WORKDIR /usr/src/models
 
 COPY ./models /usr/src/models/
 
-RUN pip install -r requirements.txt
+RUN set -xe && apt-get -yqq update && apt-get -yqq install python3-pip && pip3 install --upgrade pip
+
+COPY requirements.txt /tmp/requirements.txt
+
+RUN python3 -m pip install -r /tmp/requirements.txt
 
 EXPOSE 5000
 

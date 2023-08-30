@@ -19,6 +19,7 @@ git clone git@github.com:asherk7/EthniVision.git
 ```
 
 # Running the program
+Make sure you have docker installed and running.  
 In the root directory of the project, run the following command:  
 ```
 docker-compose up --build
