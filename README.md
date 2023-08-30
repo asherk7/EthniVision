@@ -35,14 +35,12 @@ To remove the docker images, run the following command:
 docker rmi <image_name>
 ```
 
-# Example of the website predictions
-* insert image here
-
 # Machine Learning Process
 * The neural network was created using Tensorflow and Keras.
 * The dataset contained over 100,000 images, which was split into a train, val, and test set.
 * the entire machine learning process is documented and can be found in the [machine_learning](https://github.com/asherk7/EthniVision/blob/main/ml/ethnivision_model_building.ipynb) notebook.
-* The model achieved __% accuracy on the test set.
+* The model utilized multiclass-multioutput classification by predicting between 9 age categories, 2 gender categories, and 6 ethnicity categories.
+* The model achieved 56% accuracy for age, 87% accuracy for gender, and 72% accuracy for ethnicity on the test set.
 * The model was then saved and incorporated into the backend, where it is used to make predictions on the user's image sent from the frontend.
 
 # References  
