@@ -5,9 +5,9 @@ import './redirect.css'
 
 const Redirect = () => {
   return (
-    <div>
+    <div className='container'>
       <Link to="/">
-        <button onClick={resetDatabase}>
+        <button className='btn' onClick={resetDatabase}>
           Home
         </button>
       </Link>

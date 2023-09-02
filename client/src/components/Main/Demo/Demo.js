@@ -5,9 +5,9 @@ import './demo.css'
 
 const Demo = () => {
   return (
-    <div>
+    <div classname='container'>
       <Link to="/predict">
-        <button onClick={resetDatabase}>
+        <button className='btn' onClick={resetDatabase}>
           Predict
         </button>
       </Link>

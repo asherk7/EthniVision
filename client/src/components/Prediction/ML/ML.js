@@ -50,17 +50,17 @@ const ML = () => {
   }
 
   return (
-    <div>
+    <div className='container'>
       <form onSubmit={submitImage}>
         <input type="file" accept="image/*" onChange={convertToBase64}></input>
-        <button type="submit">Submit</button>
+        <button className='btn' type="submit">Submit</button>
       </form>
       {image && <img src={image} alt="" />}
-      <p>age</p>
+      <h2>{predictions?.[0].predictions && 'Age'}</h2>
       {predictions?.[0]?.predictions && JSON.stringify(predictions[0]["predictions"]["age"])}
-      <p>gender</p>
+      <h2>{predictions?.[0].predictions && 'Gender'}</h2>
       {predictions?.[0]?.predictions && JSON.stringify(predictions[0]["predictions"]["gender"])}
-      <p>race</p>
+      <h2>{predictions?.[0].predictions && 'Ethnicity'}</h2>
       {predictions?.[0]?.predictions && JSON.stringify(predictions[0]["predictions"]["ethnicity"])}
     </div>
   )
